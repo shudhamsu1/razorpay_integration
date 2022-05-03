@@ -75,37 +75,27 @@ environ.Env.read_env()
 
 @api_view(['POST'])
 def start_payment(request):
-    # request.data is coming from frontend
+    # The request.data will be passed from the frontend part.
     amount = request.data['amount']
     name = request.data['name']
 
-    # setup razorpay client this is the client to whome user is paying money that's you
+    #Setting up the razorpay client.This is the client which user is paying. The Public key and secret key is in the .env file
     client = razorpay.Client(auth=(env('PUBLIC_KEY'), env('SECRET_KEY')))
 
-    # create razorpay order
-    # the amount will come in 'paise' that means if we pass 50 amount will become
-    # 0.5 rupees that means 50 paise so we have to convert it in rupees. So, we will 
-    # mumtiply it by 100 so it will be 50 rupees.
+   
+    # This is creating payment order for razorpay. The amount will come in 'paise' and will be multiplied by 100 and it will be in Rupees
     payment = client.order.create({"amount": int(amount) * 100, 
                                    "currency": "INR", 
                                    "payment_capture": "1"})
 
-    # we are saving an order with isPaid=False because we've just initialized the order
-    # we haven't received the money we will handle the payment succes in next 
-    # function
+    
+    # This order has just been initialized. The payment wont be made right now.
     order = Order.objects.create(order_product=name, 
                                  order_amount=amount, 
                                  order_payment_id=payment['id'])
 
     serializer = OrderSerializer(order)
 
-    """order response will be 
-    {'id': 17, 
-    'order_date': '23 January 2021 03:28 PM', 
-    'order_product': '**product name from frontend**', 
-    'order_amount': '**product amount from frontend**', 
-    'order_payment_id': 'order_G3NhfSWWh5UfjQ', # it will be unique everytime
-    'isPaid': False}"""
 
     data = {
         "payment": payment,
@@ -116,15 +106,11 @@ def start_payment(request):
 
 @api_view(['POST'])
 def handle_payment_success(request):
-    # request.data is coming from frontend
+    # The data is coming from the frotend
     res = json.loads(request.data["response"])
 
-    """res will be:
-    {'razorpay_payment_id': 'pay_G3NivgSZLx7I9e', 
-    'razorpay_order_id': 'order_G3NhfSWWh5UfjQ', 
-    'razorpay_signature': '76b2accbefde6cd2392b5fbf098ebcbd4cb4ef8b78d62aa5cce553b2014993c0'}
-    this will come from frontend which we will use to validate and confirm the payment
-    """
+  # The res will come from the frontend which will be used to confirm and validate the payment
+   
 
     ord_id = ""
     raz_pay_id = ""
@@ -139,10 +125,11 @@ def handle_payment_success(request):
         elif key == 'razorpay_signature':
             raz_signature = res[key]
 
-    # get order by payment_id which we've created earlier with isPaid=False
+    # We can get the order from payment_id
     order = Order.objects.get(order_payment_id=ord_id)
 
-    # we will pass this whole data in razorpay client to verify the payment
+    
+    # This data will pass to verify the payment
     data = {
         'razorpay_order_id': ord_id,
         'razorpay_payment_id': raz_pay_id,
@@ -151,15 +138,15 @@ def handle_payment_success(request):
 
     client = razorpay.Client(auth=(env('PUBLIC_KEY'), env('SECRET_KEY')))
 
-    # checking if the transaction is valid or not by passing above data dictionary in 
-    # razorpay client if it is "valid" then check will return None
+    
+    # This will check if the transaction is valid or not by passing the data above
     check = client.utility.verify_payment_signature(data)
 
     if check is not None:
         print("Redirect to error url or error page")
         return Response({'error': 'Something went wrong'})
 
-    # if payment is successful that means check is None then we will turn isPaid=True
+    # if payment is successful isPaid= True
     order.isPaid = True
     order.save()
 
