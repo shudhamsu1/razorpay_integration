@@ -1,0 +1,45 @@
+ {% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% comment %}
+  <div class="col-6 mx-auto" style="margin-top:10%;">
+    <form action="{% url 'payment' %}" method='POST'>
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Name</label>
+          <input type="name" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Amount</label>
+          <input type="number" name="amount" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div>
+        <button type="submit" class="btn btn-primary">Pay Now</button>
+        </div>
+      </form>
+</div>  
+{% endcomment %}
+
+
+ <hr>
+
+  <div class="contentOne">
+  <img class="firstPart" src="https://i0.wp.com/www.noostechnologies.com/wp-content/uploads/JudgingFoodLabel_Lead.jpg?w=1200&ssl=1" alt="">
+
+  <h3> RECOGNIZING CONSUMER TRUST DEFICIT.</h3>
+  <p>Every product is susceptible to counterfeiting. Counterfeiting and its closely related siblings are playing havoc everyday in our lives. Receiving fakes when paid for original. Jobs are lost as original brand owners struggle in their race with counterfeiters. Lives are lost when a unsuspecting consumer consumes a "counterfeit" life saving drug or when the brakes in the car is not as original.</p>
+
+  </div>
+
+
+  <div class="contentTwo">
+
+
+    <img class="secondPart"  src="https://i0.wp.com/www.noostechnologies.com/wp-content/uploads/SCoTAuthenticationScreenWithMessage.png?w=874&ssl=1" alt="">
+
+    <h4>DEMOCRATIZING. PRODUCT AUTHENTICATION.</h4>
+    <p>SCoT simplifies establishing product authenticity - Any Place, Any Time. Establishing authenticity no longer requires domain expertise.</p>
+    <p>Our expert system abstracts details to make verifying authentication as simple as taking a picture. Fingerprint generation, matching and consumer notification is completed under 5 seconds.</p>
+  </div>  
+
+  {% endblock %} 
