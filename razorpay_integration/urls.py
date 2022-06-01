@@ -9,4 +9,6 @@ urlpatterns = [
     path("product/",views.product,  name="product"),
     path("payment/", views.order_payment, name="payment"),
     path("callback/", views.callback, name="callback"),
+    path("startPay/",views.startPay,  name="startPay"),
+    
 ]

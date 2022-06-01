@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#4rpg#4o@2tigwoh33me+%wb)5fc7g*ft9ow1b-16^1b!uz&#^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['djangorazorpay.herokuapp.com/','127.0.0.1']
+ALLOWED_HOSTS = ['djangorazorpay.herokuapp.com','127.0.0.1']
 
 
 # Application definition
