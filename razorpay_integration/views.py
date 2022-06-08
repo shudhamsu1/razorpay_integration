@@ -43,7 +43,7 @@ def order_payment(request):
             request,
             "payment.html",
             {
-                "callback_url": "https://" + "djangorazorpay.herokuapp.com/" + "/razorpay/callback/",
+                "callback_url": "https://" + "djangorazorpay.herokuapp.com" + "/razorpay/callback/",
                 "razorpay_key": RAZORPAY_KEY_ID,
                 "order": order,
             },
