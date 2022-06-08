@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="text-center" style="margin-top:20px">
-    {% if status == "Success" %}
+    {% if status != "Success" %}
     <h2>THANKS YOUR PAYMENT HAS BEEN RECEIVED</h2>
      <a href="https://djangorazorpay.herokuapp.com/razorpay/"> 
     {% else %}
